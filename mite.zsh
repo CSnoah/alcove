@@ -37,6 +37,14 @@ case "$1" in
         -composite \
         ~/Downloads/kitty-background.png
       ;;
+    set-size)
+      magick -size 1920x1080 xc:transparent \
+        "$image_url" \
+        -geometry "$2"x"$3"+0+0 \
+        -gravity southeast \
+        -composite \
+        ~/Downloads/kitty-background.png
+      ;;
     *)
         echo "Usage: kitty-bg {on|off}"
         ;;
