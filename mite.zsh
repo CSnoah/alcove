@@ -45,6 +45,10 @@ case "$1" in
         -composite \
         ~/Downloads/kitty-background.png
       ;;
+    update)
+      current="$(ls /tmp/mykitty-* | head -n 1)"
+      export KITTY_LISTEN_ON="unix:$current"
+      ;;
     *)
         echo "Usage: kitty-bg {on|off}"
         ;;
