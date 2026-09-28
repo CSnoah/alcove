@@ -58,8 +58,8 @@ case "$1" in
       # export KITTY_LISTEN_ON="unix:$current"
       # echo "updated socket: $KITTY_LISTEN_ON"
 
-      # current="$(ls /tmp/mykitty-* | head -n 1)"
-      # echo "export KITTY_LISTEN_ON=\"unix:$current\""
+      current="$(ls /tmp/mykitty-* | head -n 1)"
+      echo "export KITTY_LISTEN_ON=\"unix:$current\""
       ;;
     *)
       echo "Usage: mite {on|off}"
