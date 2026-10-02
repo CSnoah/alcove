@@ -2,7 +2,9 @@
 
 # CURRENT_IMAGE_PATH - a convenient variable that allows operations to occur without the user constanly having to provide the image path
 # KITTY_IMAGE_PATH - the location that the image is stored
-source "$(dirname $0)/.config.zsh"
+# source "$(dirname $0)/.config.zsh"
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/mite"
+config_file="$config_dir/mite.config"
 
 file_path="$KITTY_IMAGE_DIR/$1"
 if [[ "$#" -eq 1 && -f "$file_path" ]]; then

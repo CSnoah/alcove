@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/.config.zsh"
+# config file
+# source "$(dirname $0)/.config.zsh"
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/mite"
+config_file="$config_dir/mite.config"
+source "$config_file"
 
 mite() {
   source $MITE_PROGM_DIR/mite.sh "$@"
