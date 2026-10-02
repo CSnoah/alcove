@@ -3,16 +3,16 @@
 # ---------------------------------------------------------------------------------
 # config: setup program directory 
 
-config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/mite"
-config_file="$config_dir/mite.config"
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/alcove"
+config_file="$config_dir/alcove.config"
 
 mkdir -p "$config_dir"
 
 if [[ ! -f "$config_file" ]]; then
   touch "$config_file"
-  echo "MITE_PROGM_DIR=\"$PWD\"" >> "$config_file"
-  echo "[NOTE]: mite path: $PWD"
-  echo "[NOTE]: If utility path changes update mite.config: MITE_PROGM_DIR=new-path"
+  echo "ALCOVE_PROGM_DIR=\"$PWD\"" >> "$config_file"
+  echo "[NOTE]: alcove path: $PWD"
+  echo "[NOTE]: If utility path changes update alcove.config: ALCOVE_PROGM_DIR=new-path"
   echo "[NOTE]: Config location: $config_file"
 fi
 
