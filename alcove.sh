@@ -10,21 +10,47 @@ source "$config_file"
 mode="$DEFAULT_MODE"
 param_count="$#"
 
-# echo "PARAMS $@"
-
 # parse flags
 while getopts "hm:" opts; do
   case "$opts" in
     h)
-      echo "alcove <path>"
+      echo "----------------------------------------------------"
+      echo "Basic Usage: alcove {<filepath>|on|off|}"
+      echo "----------------------------------------------------"
+      # echo "\n"
+      echo "----------------------------------------------------"
+      echo "modes"
+      echo "                   Alcove utilizes the kitty remote control protocol"
+      echo "                   This proticol offers two ways to display a background image"
+      echo "                   mode=gb => uses kitty @ set-background-image"
+      echo "                   mode=icon => uses kitty @ set-window-logo"
+      echo "                   mode=dule => targets both"
+      echo "----------------------------------------------------"
+      echo "----------------------------------------------------"
+      echo "flags"
+      echo "m <mode>           Designate a mode {bg|icon|dule}"
+      echo "                   Example: alcove -m icon <path>"
+      echo "h                  Bring up the help menu"
+      echo "----------------------------------------------------"
+      # echo "\n"
+      echo "----------------------------------------------------"
+      echo "Commands:"
+      echo "alcove <path>      Set the background/icon to the imagepath"
+      echo "on                 Turn {bg&&icon} image on"
+      echo "off                Turn {bg&&icon} image off"
+      echo "config             Shows all settings in config file"
+      echo "set-mode <mode>    Allows you to set the default mode in the config file"
+      echo "set-"
+      echo "..."
+      echo "----------------------------------------------------"
     ;;
     m)
       mode="$OPTARG"
   esac
 done
 shift $((OPTIND - 1))
+param_count="$#"
 
-# echo "PARAMS $@"
 # valid_commands=("on" "off" "compose" "create" "set-mode" "set-size", "update", "config")
 # valid_flags=("-m" "-h")
 
@@ -41,22 +67,20 @@ else
   # echo "info: [ filepath is valid ]"
 fi
 
-# echo "MODE: $mode"
-
 # no parameter 
 if [[ "$param_count" -eq 1 && -f "$file_path" ]]; then
-  # reset
-  kitty @ set-background-image none
-  kitty @ set-window-logo none
-
   # icon
   if [[ "$mode" == "icon" || "$mode" == "dule" ]]; then
+    # reset
+    kitty @ set-window-logo none
     kitty @ set-window-logo "$file_path"
     echo "info: [ set icon ]"
   fi
 
   # bg
   if [[ "$mode" == "bg" || "$mode" == "dule" ]]; then
+    # reset
+    kitty @ set-background-image none
     # set current image url in config file
     sed -i '' "s|^CURRENT_IMAGE_PATH=.*|CURRENT_IMAGE_PATH=$file_path|" "$config_file"
     # create concatinated image
@@ -76,6 +100,7 @@ fi
 case "$1" in
     on)
       kitty @ set-background-image --layout=scaled "$KITTY_IMAGE_PATH"
+      kitty @ set-window-logo "$KITTY_IMAGE_PATH"
       ;;
     off)
       kitty @ set-background-image none
