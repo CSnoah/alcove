@@ -10,7 +10,7 @@ alcove() {
   source $ALCOVE_PROGM_DIR/alcove.sh "$@"
 }
 
-# mitigate autocomplete
+# autocomplete
 imgs_autoc() {
   local image_files="$(ls $KITTY_IMAGE_DIR)"
   local cur="${COMP_WORDS[COMP_CWORD]}"
