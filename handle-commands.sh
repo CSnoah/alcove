@@ -25,7 +25,7 @@ handle_default() {
       # reset
       kitty @ set-background-image none
       # set current image url in config file
-      sed -i '' "s|^CONF_ALCOVE_CURRENT_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_IMAGE_PATH=$file_path|" "$ALCOVE_CONFIG_FILE"
+      sed -i '' "s|^CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=$file_path|" "$ALCOVE_CONFIG_FILE"
       # create concatinated image
       # file write lags so just using parameter 
       magick -size 1920x1080 xc:transparent \
@@ -109,21 +109,41 @@ handle_off() {
 }
 
 handle_print_config() {
-  echo "CONF_ALCOVE_CURRENT_IMAGE_PATH: $CONF_ALCOVE_CURRENT_IMAGE_PATH"
+  echo "CONF_ALCOVE_CURRENT_BG_IMAGE_PATH: $CONF_ALCOVE_CURRENT_BG_IMAGE_PATH"
   echo "CONF_ALCOVE_KITTY_IMAGE_PATH: $CONF_ALCOVE_KITTY_IMAGE_PATH"
-  echo "CONF_ALCOVE_KITTY_IMAGE_DIR: $KITTY_IMAGE_DIR"
+  echo "CONF_ALCOVE_KITTY_IMAGE_DIR: $CONF_ALCOVE_KITTY_IMAGE_DIR"
   echo "CONF_ALCOVE_PROGM_DIR: $CONF_ALCOVE_PROGM_DIR"
   echo "CONF_ALCOVE_DEFAULT_MODE: $CONF_ALCOVE_DEFAULT_MODE"
 }
 
 handle_update() {
   current="$(ls /tmp/mykitty-* | head -n 1)"
-  echo "new socket: $current"
-  echo "old socket: $KITTY_LISTEN_ON"
-  export KITTY_LISTEN_ON="unix:$current"
-  echo "updated socket: $KITTY_LISTEN_ON"
+  echo "[INFO]: new socket: $current"
+  echo "[INFO]: old socket: $KITTY_LISTEN_ON"
+  if [[ -f "unix:$current" ]]; then
+    export KITTY_LISTEN_ON="unix:$current"
+    echo "updated socket: $KITTY_LISTEN_ON"
+  else
+    echo "[INFO]: cant find a new socket"
+  fi
+
   # current="$(ls /tmp/mykitty-* | head -n 1)"
   # echo "export KITTY_LISTEN_ON=\"unix:$current\""
+  
+  # local socket
+  #
+  # for socket in /tmp/mykitty-*(N); do
+  #   [[ -S "$socket" ]] || continue
+  #
+  #   if kitty @ --to "unix:$socket" ls >/dev/null 2>&1; then
+  #     export KITTY_LISTEN_ON="unix:$socket"
+  #     echo "Connected to: $KITTY_LISTEN_ON"
+  #     return 0
+  #   fi
+  # done
+  #
+  # echo "No working Kitty socket found." >&2
+  # return 1
 }
 
 handle_set_mode() {
@@ -142,7 +162,7 @@ handle_bg_compose() {
   file_path="$CONF_ALCOVE_KITTY_IMAGE_DIR/$1"
   if [[ "$#" -eq 1 && -f "$file_path" ]]; then
     # set current image url in config file
-    sed -i '' "s|^CONF_ALCOVE_CURRENT_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_IMAGE_PATH=$file_path|" "$ALCOVE_CONFIG_FILE"
+    sed -i '' "s|^CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=$file_path|" "$ALCOVE_CONFIG_FILE"
     # create concatinated image
     # file write lags so just using parameter 
     magick -size 1920x1080 xc:transparent \
@@ -158,7 +178,7 @@ handle_bg_compose() {
 
 handle_bg_create() {
   magick -size 1920x1080 xc:transparent \
-    "$CONF_ALCOVE_CURRENT_IMAGE_PATH" \
+    "$CONF_ALCOVE_CURRENT_BG_IMAGE_PATH" \
     -geometry 700x600+0+0 \
     -gravity southeast \
     -composite \
@@ -169,7 +189,7 @@ handle_bg_create() {
 handle_set_size() {
   if [[ "$ALCOVE_MODE" == 'bg' ]]; then
     magick -size 1920x1080 xc:transparent \
-      "$CONF_ALCOVE_CURRENT_IMAGE_PATH" \
+      "$CONF_ALCOVE_CURRENT_BG_IMAGE_PATH" \
       -geometry "$2"x"$3"+0+0 \
       -gravity southeast \
       -composite \
@@ -191,7 +211,7 @@ handle_set_size() {
     local length="$2"
     local width="$3"
     magick -size 1920x1080 xc:transparent \
-      "$CONF_ALCOVE_CURRENT_IMAGE_PATH" \
+      "$CONF_ALCOVE_CURRENT_BG_IMAGE_PATH" \
       -geometry "$length"x"$width"+0+0 \
       -gravity southeast \
       -composite \
