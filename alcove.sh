@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# CURRENT_IMAGE_PATH - a convenient variable that allows operations to occur without the user constanly having to provide the image path
-# KITTY_IMAGE_PATH - the location that the image is stored
-# source "$(dirname $0)/.config.zsh"
-
 # config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/alcove"
 # config_file="$config_dir/alcove.config"
 ALCOVE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/alcove"
