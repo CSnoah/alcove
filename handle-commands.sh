@@ -1,7 +1,7 @@
 # alcove -m <mode> <path>
 
 handle_default() {
-  # let user enter raw path or just filename in specified directory()
+  # let user enter raw path or just filename in specified directory
   local file_path="$CONF_ALCOVE_KITTY_IMAGE_DIR/$1"
   if [[ ! -f "$file_path" ]]; then
     if [[ -f "$1" ]]; then
@@ -187,7 +187,26 @@ handle_bg_create() {
 }
 
 handle_set_size() {
-  if [[ "$ALCOVE_MODE" == 'bg' ]]; then
+  # error checking 
+  local param_count=$(($# - 1))
+  if [[ "$ALCOVE_MODE" == 'dule' && $param_count -ne 3 ]]; then
+    echo "[ERROR]: must supply three parameters."
+    echo "[Note]: alcove set_size <leng> <width> <size>"
+    return 1
+  fi
+  if [[ "$ALCOVE_MODE" == 'bg' && $param_count -ne 2 ]]; then
+    echo "[ERROR]: must supply two parameters."
+    echo "[Note]: alcove set_size <leng> <width>"
+    return 1
+  fi
+  if [[ "$ALCOVE_MODE" == 'icon' && $param_count -ne 1 ]]; then
+    echo "[ERROR]: must supply 1 parameter."
+    echo "[Note]: alcove set_size <size>"
+    return 1
+  fi
+
+  # handle condition mode=bg
+  if [[ "$ALCOVE_MODE" == 'bg' || "$ALCOVE_MODE" == 'dule' ]]; then
     magick -size 1920x1080 xc:transparent \
       "$CONF_ALCOVE_CURRENT_BG_IMAGE_PATH" \
       -geometry "$2"x"$3"+0+0 \
@@ -195,7 +214,9 @@ handle_set_size() {
       -composite \
       "$CONF_ALCOVE_KITTY_IMAGE_PATH"
     kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
-  elif [[ "$ALCOVE_MODE" == 'icon' ]]; then
+  fi
+  # handle condition mode=icon
+  if [[ "$ALCOVE_MODE" == 'icon' || "$ALCOVE_MODE" == "dule" ]]; then
     local size="$2"
     if [[ -f "$KITTY_CONFIG_FILE" ]]; then
       if grep -q '^window_logo_scale ' "$KITTY_CONFIG_FILE"; then
@@ -204,19 +225,7 @@ handle_set_size() {
         echo "window_logo_scale $size" >> "$KITTY_CONFIG_FILE"
       fi
     else
-      echo "kitty config does not exist"
+      echo "[ERROR]: kitty config does not exist"
     fi
-  else
-    local size="$4"
-    local length="$2"
-    local width="$3"
-    magick -size 1920x1080 xc:transparent \
-      "$CONF_ALCOVE_CURRENT_BG_IMAGE_PATH" \
-      -geometry "$length"x"$width"+0+0 \
-      -gravity southeast \
-      -composite \
-      "$CONF_ALCOVE_KITTY_IMAGE_PATH"
-    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
-    kitty @ set-window-logo --scale "$size"
   fi
 }
