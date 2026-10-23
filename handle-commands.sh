@@ -26,6 +26,11 @@ handle_default() {
       kitty @ set-background-image none
       # set current image url in config file
       sed -i '' "s|^CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=$file_path|" "$ALCOVE_CONFIG_FILE"
+
+      if [[ ! -f "$CONF_ALCOVE_BG_IMAGE_PATH" ]]; then
+        echo "[ERROR]: Config var CONF_ALCOVE_BG_IMAGE_PATH incorrecly set."
+      fi
+
       # create concatinated image
       # file write lags so just using parameter 
       magick -size 1920x1080 xc:transparent \
@@ -33,9 +38,9 @@ handle_default() {
         -geometry 700x600+0+0 \
         -gravity southeast \
         -composite \
-        $CONF_ALCOVE_KITTY_IMAGE_PATH
+        $CONF_ALCOVE_BG_IMAGE_PATH
       # set terminal background image
-      kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+      kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_BG_IMAGE_PATH"
     fi
   fi
 }
@@ -86,13 +91,13 @@ handle_flags() {
 
 handle_on() {
   if [[ "$ALCOVE_MODE" == "bg" ]]; then
-    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_BG_IMAGE_PATH"
   elif [[ "$ALCOVE_MODE" == "icon" ]]; then
-    kitty @ set-window-logo "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+    kitty @ set-window-logo "$CONF_ALCOVE_BG_IMAGE_PATH"
   else
     # dule
-    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
-    kitty @ set-window-logo "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_BG_IMAGE_PATH"
+    kitty @ set-window-logo "$CONF_ALCOVE_BG_IMAGE_PATH"
   fi
 }
 
@@ -110,7 +115,7 @@ handle_off() {
 
 handle_print_config() {
   echo "CONF_ALCOVE_CURRENT_BG_IMAGE_PATH: $CONF_ALCOVE_CURRENT_BG_IMAGE_PATH"
-  echo "CONF_ALCOVE_KITTY_IMAGE_PATH: $CONF_ALCOVE_KITTY_IMAGE_PATH"
+  echo "CONF_ALCOVE_BG_IMAGE_PATH: $CONF_ALCOVE_BG_IMAGE_PATH"
   echo "CONF_ALCOVE_KITTY_IMAGE_DIR: $CONF_ALCOVE_KITTY_IMAGE_DIR"
   echo "CONF_ALCOVE_PROGM_DIR: $CONF_ALCOVE_PROGM_DIR"
   echo "CONF_ALCOVE_DEFAULT_MODE: $CONF_ALCOVE_DEFAULT_MODE"
@@ -170,9 +175,9 @@ handle_bg_compose() {
       -geometry 900x800+0+0 \
       -gravity southeast \
       -composite \
-      $CONF_ALCOVE_KITTY_IMAGE_PATH
+      $CONF_ALCOVE_BG_IMAGE_PATH
     # set terminal background image
-    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_BG_IMAGE_PATH"
   fi
 }
 
@@ -182,8 +187,8 @@ handle_bg_create() {
     -geometry 700x600+0+0 \
     -gravity southeast \
     -composite \
-    $CONF_ALCOVE_KITTY_IMAGE_PATH
-  kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+    $CONF_ALCOVE_BG_IMAGE_PATH
+  kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_BG_IMAGE_PATH"
 }
 
 handle_set_size() {
@@ -212,8 +217,8 @@ handle_set_size() {
       -geometry "$2"x"$3"+0+0 \
       -gravity southeast \
       -composite \
-      "$CONF_ALCOVE_KITTY_IMAGE_PATH"
-    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_KITTY_IMAGE_PATH"
+      "$CONF_ALCOVE_BG_IMAGE_PATH"
+    kitty @ set-background-image --layout=scaled "$CONF_ALCOVE_BG_IMAGE_PATH"
   fi
   # handle condition mode=icon
   if [[ "$ALCOVE_MODE" == 'icon' || "$ALCOVE_MODE" == "dule" ]]; then

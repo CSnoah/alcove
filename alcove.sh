@@ -44,7 +44,7 @@ case "$1" in
       sed -i '' "s|^CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=$2|" "$ALCOVE_CONFIG_FILE"
       ;;
     bg-set-path)
-      sed -i '' "s|^CONF_ALCOVE_KITTY_IMAGE_PATH=.*|CONF_ALCOVE_KITTY_IMAGE_PATH=$2|" "$ALCOVE_CONFIG_FILE"
+      sed -i '' "s|^CONF_ALCOVE_BG_IMAGE_PATH=.*|CONF_ALCOVE_BG_IMAGE_PATH=$2|" "$ALCOVE_CONFIG_FILE"
       ;;
     set-size)
       handle_set_size "${ALCOVE_PARAMS[@]}"
