@@ -15,7 +15,7 @@ alcove() {
 
 # autocomplete
 imgs_autoc() {
-  local image_files="$(ls $CONF_ALCOVE_KITTY_IMAGE_DIR)"
+  local image_files="$(ls $CONF_ALCOVE_IMAGE_DIR)"
   local cur="${COMP_WORDS[COMP_CWORD]}"
   COMPREPLY=( $(compgen -W "${image_files}" -- "$cur") )
 }

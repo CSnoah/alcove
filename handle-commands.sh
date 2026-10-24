@@ -2,7 +2,7 @@
 
 handle_default() {
   # let user enter raw path or just filename in specified directory
-  local file_path="$CONF_ALCOVE_KITTY_IMAGE_DIR/$1"
+  local file_path="$CONF_ALCOVE_IMAGE_DIR/$1"
   if [[ ! -f "$file_path" ]]; then
     if [[ -f "$1" ]]; then
       file_path=$1
@@ -116,7 +116,7 @@ handle_off() {
 handle_print_config() {
   echo "CONF_ALCOVE_CURRENT_BG_IMAGE_PATH: $CONF_ALCOVE_CURRENT_BG_IMAGE_PATH"
   echo "CONF_ALCOVE_BG_IMAGE_PATH: $CONF_ALCOVE_BG_IMAGE_PATH"
-  echo "CONF_ALCOVE_KITTY_IMAGE_DIR: $CONF_ALCOVE_KITTY_IMAGE_DIR"
+  echo "CONF_ALCOVE_IMAGE_DIR: $CONF_ALCOVE_IMAGE_DIR"
   echo "CONF_ALCOVE_PROGM_DIR: $CONF_ALCOVE_PROGM_DIR"
   echo "CONF_ALCOVE_DEFAULT_MODE: $CONF_ALCOVE_DEFAULT_MODE"
 }
@@ -164,7 +164,7 @@ handle_set_mode() {
 }
 
 handle_bg_compose() {
-  file_path="$CONF_ALCOVE_KITTY_IMAGE_DIR/$1"
+  file_path="$CONF_ALCOVE_IMAGE_DIR/$1"
   if [[ "$#" -eq 1 && -f "$file_path" ]]; then
     # set current image url in config file
     sed -i '' "s|^CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=.*|CONF_ALCOVE_CURRENT_BG_IMAGE_PATH=$file_path|" "$ALCOVE_CONFIG_FILE"

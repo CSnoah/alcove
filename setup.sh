@@ -45,8 +45,8 @@ fi
 if ! grep -q '^CONF_ALCOVE_PROGM_DIR=' "$alcove_config_file"; then
   echo "CONF_ALCOVE_PROGM_DIR=\"$PWD\"" >> "$alcove_config_file"
 fi
-if ! grep -q '^CONF_ALCOVE_KITTY_IMAGE_DIR=' "$alcove_config_file"; then
-  echo "CONF_ALCOVE_KITTY_IMAGE_DIR=\"$image_dir\"" >> "$alcove_config_file"
+if ! grep -q '^CONF_ALCOVE_IMAGE_DIR=' "$alcove_config_file"; then
+  echo "CONF_ALCOVE_IMAGE_DIR=\"$image_dir\"" >> "$alcove_config_file"
 fi
 if ! grep -q '^CONF_ALCOVE_BG_IMAGE_PATH=' "$alcove_config_file"; then
   echo "CONF_ALCOVE_BG_IMAGE_PATH=\"$image_dir\"/kitty-background.png" >> "$alcove_config_file"
